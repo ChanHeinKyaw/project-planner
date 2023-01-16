@@ -48,17 +48,19 @@ export default {
   },
   computed: {
     filteredProjects() {
-      if (this.current === "complete") {
-        return this.projects.filter((project) => {
-          return project.complete;
-        });
+      if (localStorage.getItem("projects")) {
+        if (this.current === "complete") {
+          return this.projects.filter((project) => {
+            return project.complete;
+          });
+        }
+        if (this.current === "ongoing") {
+          return this.projects.filter((project) => {
+            return !project.complete;
+          });
+        }
+        return this.projects;
       }
-      if (this.current === "ongoing") {
-        return this.projects.filter((project) => {
-          return !project.complete;
-        });
-      }
-      return this.projects;
     },
   },
   mounted() {
