@@ -6,7 +6,7 @@
       </div>
       <div>
         <span class="material-icons" @click="deleteProject"> delete </span>
-        <router-link :to="{ name: 'editProject' ,params: {id: project.id }}">
+        <router-link :to="{ name: 'editProject', params: { id: project.id } }">
           <span class="material-icons"> edit </span>
         </router-link>
         <span class="material-icons" @click="completeProject"> done </span>
@@ -22,19 +22,11 @@ export default {
   data() {
     return {
       showDetail: false,
-      api: "http://localhost:3000/projects/",
     };
   },
   methods: {
     deleteProject() {
-      let deleteRoute = this.api + this.project.id;
-      fetch(deleteRoute, { method: "DELETE" })
-        .then(() => {
-          this.$emit("delete", this.project.id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.$emit("removeProject", this.project.id);
     },
     completeProject() {
       let completeRoute = this.api + this.project.id;

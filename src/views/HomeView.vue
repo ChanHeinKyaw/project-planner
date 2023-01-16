@@ -1,19 +1,20 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <FilterNav @filterValue="current=$event" :current="current"></FilterNav>
+    <FilterNav @filterValue="current = $event" :current="current"></FilterNav>
     <div v-for="project in filteredProjects" :key="project.id">
       <SingleProject
         :project="project"
         @delete="deleteProject"
         @complete="completeProject"
+        @removeProject="removeProject"
       ></SingleProject>
     </div>
   </div>
 </template>
 
 <script>
-import FilterNav from '../components/FilterNav'
+import FilterNav from "../components/FilterNav";
 import SingleProject from "../components/SingleProject";
 export default {
   name: "HomeView",
@@ -24,6 +25,10 @@ export default {
     };
   },
   methods: {
+    removeProject(id) {
+      this.projects.splice(this.projects.indexOf(id), 1);
+      localStorage.setItem("projects", JSON.stringify(this.projects));
+    },
     deleteProject(id) {
       this.projects = this.projects.filter((project) => {
         return project.id != id;
@@ -42,31 +47,23 @@ export default {
     SingleProject,
   },
   computed: {
-    filteredProjects(){
-      if(this.current === 'complete'){
+    filteredProjects() {
+      if (this.current === "complete") {
         return this.projects.filter((project) => {
           return project.complete;
         });
       }
-      if(this.current === 'ongoing'){
+      if (this.current === "ongoing") {
         return this.projects.filter((project) => {
           return !project.complete;
         });
       }
       return this.projects;
-    }
+    },
   },
   mounted() {
-    fetch("http://localhost:3000/projects")
-      .then((response) => {
-        return response.json();
-      })
-      .then((datas) => {
-        this.projects = datas;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    let datas = localStorage.getItem("projects");
+    this.projects = JSON.parse(datas);
   },
 };
 </script>

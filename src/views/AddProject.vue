@@ -15,25 +15,31 @@ export default {
     return {
       title: "",
       detail: "",
+      projects: [],
     };
+  },
+  mounted() {
+    if (localStorage.getItem("projects")) {
+      try {
+        this.projects = JSON.parse(localStorage.getItem("projects"));
+      } catch (e) {
+        localStorage.removeItem("projects");
+      }
+    }
   },
   methods: {
     addProject() {
-      fetch("http://localhost:3000/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: this.title,
-          detail: this.detail,
-          complete: false,
-        }),
-      })
-        .then(() => {
-          return this.$router.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.saveProjects();
+    },
+    saveProjects() {
+      this.projects.push({
+        id: this.projects.length + 1,
+        title: this.title,
+        detail: this.detail,
+        complete: false,
+      });
+      localStorage.setItem("projects", JSON.stringify(this.projects));
+      this.$router.push("/");
     },
   },
 };
