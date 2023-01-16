@@ -3,8 +3,10 @@
   <form @submit.prevent="addProject">
     <label>Project Title</label>
     <input type="text" v-model="title" />
+    <span class="errMessage" @show="titleError">{{ titleError }}</span>
     <label>Project Detail</label>
     <input type="text" v-model="detail" />
+    <span class="errMessage" @show="detailError">{{ detailError }}</span>
     <button>Add Project</button>
   </form>
 </template>
@@ -16,6 +18,8 @@ export default {
       title: "",
       detail: "",
       projects: [],
+      titleError: "",
+      detailError: "",
     };
   },
   mounted() {
@@ -29,6 +33,19 @@ export default {
   },
   methods: {
     addProject() {
+      if (this.title == "" || this.detail == "") {
+        if (this.title == "") {
+          this.titleError = "The title field is required!";
+        } else {
+          this.titleError = "";
+        }
+        if (this.detail == "") {
+          this.detailError = "The detail field is required!";
+        } else {
+          this.detailError = "";
+        }
+        return;
+      }
       this.saveProjects();
     },
     saveProjects() {
@@ -84,5 +101,8 @@ form button {
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+}
+.errMessage {
+  color: crimson;
 }
 </style>

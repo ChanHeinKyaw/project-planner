@@ -3,8 +3,10 @@
   <form @submit.prevent="updateProject">
     <label>Project Title</label>
     <input type="text" v-model="title" />
+    <span class="errMessage" @show="titleError">{{ titleError }}</span>
     <label>Project Detail</label>
     <input type="text" v-model="detail" />
+    <span class="errMessage" @show="detailError">{{ detailError }}</span>
     <button>Update Project</button>
   </form>
 </template>
@@ -17,10 +19,25 @@ export default {
       title: "",
       detail: "",
       projects: [],
+      titleError: "",
+      detailError: "",
     };
   },
   methods: {
     updateProject() {
+      if (this.title == "" || this.detail == "") {
+        if (this.title == "") {
+          this.titleError = "The title field is required!";
+        } else {
+          this.titleError = "";
+        }
+        if (this.detail == "") {
+          this.detailError = "The detail field is required!";
+        } else {
+          this.detailError = "";
+        }
+        return;
+      }
       this.update();
     },
     update() {
