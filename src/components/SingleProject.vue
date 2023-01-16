@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       showDetail: false,
+      projects: [],
     };
   },
   methods: {
@@ -29,21 +30,28 @@ export default {
       this.$emit("removeProject", this.project.id);
     },
     completeProject() {
-      let completeRoute = this.api + this.project.id;
-      fetch(completeRoute, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          complete: !this.project.complete,
-        }),
-      })
-        .then(() => {
-          this.$emit("complete", this.project.id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.complete();
     },
+    complete() {
+      let data = this.projects.find((project) => {
+        return project.id == this.project.id;
+      });
+
+      data.complete = !data.complete;
+      this.$emit("complete", this.project.id);
+
+      localStorage.setItem("projects", JSON.stringify(this.projects));
+      this.$router.push("/");
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("projects")) {
+      try {
+        this.projects = JSON.parse(localStorage.getItem("projects"));
+      } catch (e) {
+        localStorage.removeItem("projects");
+      }
+    }
   },
 };
 </script>
