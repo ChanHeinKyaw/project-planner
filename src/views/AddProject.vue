@@ -3,8 +3,10 @@
   <form @submit.prevent="addProject">
     <label>Project Title</label>
     <input type="text" v-model="title" />
+    <span class="errMessage" @show="titleError">{{ titleError }}</span>
     <label>Project Detail</label>
     <input type="text" v-model="detail" />
+    <span class="errMessage" @show="detailError">{{ detailError }}</span>
     <button>Add Project</button>
   </form>
 </template>
@@ -15,25 +17,50 @@ export default {
     return {
       title: "",
       detail: "",
+      projects: [],
+      titleError: "",
+      detailError: "",
     };
+  },
+  mounted() {
+    if (localStorage.getItem("projects")) {
+      try {
+        this.projects = JSON.parse(localStorage.getItem("projects"));
+      } catch (e) {
+        localStorage.removeItem("projects");
+      }
+    }
   },
   methods: {
     addProject() {
-      fetch("http://localhost:3000/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: this.title,
-          detail: this.detail,
-          complete: false,
-        }),
-      })
-        .then(() => {
-          return this.$router.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (this.title == "" || this.detail == "") {
+        if (this.title == "") {
+          this.titleError = "The title field is required!";
+        } else {
+          this.titleError = "";
+        }
+        if (this.detail == "") {
+          this.detailError = "The detail field is required!";
+        } else {
+          this.detailError = "";
+        }
+        return;
+      }
+      this.saveProjects();
+    },
+    saveProjects() {
+      this.projects.push({
+        id: this.projects.length + 1,
+        title: this.title,
+        detail: this.detail,
+        complete: false,
+      });
+      localStorage.setItem("projects", JSON.stringify(this.projects));
+      this.$router.push("/");
+      window.toaster.success("Project Created Success!", {
+        position: "top-right",
+        duration: 3000,
+      });
     },
   },
 };
@@ -78,5 +105,8 @@ form button {
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+}
+.errMessage {
+  color: crimson;
 }
 </style>

@@ -6,7 +6,7 @@
       </div>
       <div>
         <span class="material-icons" @click="deleteProject"> delete </span>
-        <router-link :to="{ name: 'editProject' ,params: {id: project.id }}">
+        <router-link :to="{ name: 'editProject', params: { id: project.id } }">
           <span class="material-icons"> edit </span>
         </router-link>
         <span class="material-icons" @click="completeProject"> done </span>
@@ -22,36 +22,36 @@ export default {
   data() {
     return {
       showDetail: false,
-      api: "http://localhost:3000/projects/",
+      projects: [],
     };
   },
   methods: {
     deleteProject() {
-      let deleteRoute = this.api + this.project.id;
-      fetch(deleteRoute, { method: "DELETE" })
-        .then(() => {
-          this.$emit("delete", this.project.id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.$emit("removeProject", this.project.id);
     },
     completeProject() {
-      let completeRoute = this.api + this.project.id;
-      fetch(completeRoute, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          complete: !this.project.complete,
-        }),
-      })
-        .then(() => {
-          this.$emit("complete", this.project.id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.complete();
     },
+    complete() {
+      let data = this.projects.find((project) => {
+        return project.id == this.project.id;
+      });
+
+      data.complete = !data.complete;
+      this.$emit("complete", this.project.id);
+
+      localStorage.setItem("projects", JSON.stringify(this.projects));
+      this.$router.push("/");
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("projects")) {
+      try {
+        this.projects = JSON.parse(localStorage.getItem("projects"));
+      } catch (e) {
+        localStorage.removeItem("projects");
+      }
+    }
   },
 };
 </script>
