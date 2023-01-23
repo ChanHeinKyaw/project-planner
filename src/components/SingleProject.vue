@@ -31,6 +31,7 @@ export default {
     },
     completeProject() {
       this.complete();
+      this.alertIsComplete();
     },
     complete() {
       let data = this.projects.find((project) => {
@@ -42,6 +43,25 @@ export default {
 
       localStorage.setItem("projects", JSON.stringify(this.projects));
       this.$router.push("/");
+    },
+    alertIsComplete() {
+      let datas = JSON.parse(localStorage.getItem("projects"));
+
+      const project = datas.find((data) => {
+        return data.id == this.project.id;
+      });
+
+      if (project.complete == true) {
+        window.toaster.success("Complete Task", {
+          position: "top-right",
+          duration: 3000,
+        });
+      } else {
+        window.toaster.success("Uncomplete Task", {
+          position: "top-right",
+          duration: 3000,
+        });
+      }
     },
   },
   mounted() {
