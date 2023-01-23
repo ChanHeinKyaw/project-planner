@@ -1,8 +1,23 @@
 <template>
   <div class="filter-nav">
-    <button @click="filterBy('all')" :class="{active : current === 'all'}">all</button>
-    <button @click="filterBy('complete')" :class="{active : current === 'complete'}">complete</button>
-    <button @click="filterBy('ongoing')" :class="{active : current === 'ongoing'}">ongoing</button>
+    <button @click="filterBy('all')" :class="{ active: current === 'all' }">
+      all
+    </button>
+    <button @click="filterBy('today')" :class="{ active: current === 'today' }">
+      today
+    </button>
+    <button
+      @click="filterBy('complete')"
+      :class="{ active: current === 'complete' }"
+    >
+      complete
+    </button>
+    <button
+      @click="filterBy('ongoing')"
+      :class="{ active: current === 'ongoing' }"
+    >
+      ongoing
+    </button>
   </div>
 </template>
 

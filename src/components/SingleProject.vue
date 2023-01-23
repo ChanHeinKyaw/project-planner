@@ -2,7 +2,9 @@
   <div class="project" :class="{ complete: project.complete }">
     <div class="flexing">
       <div>
-        <h3 @click="showDetail = !showDetail">{{ project.title }}</h3>
+        <h3 @click="showDetail = !showDetail">
+          {{ project.title }}<span class="task-date">({{ moment }})</span>
+        </h3>
       </div>
       <div>
         <span class="material-icons" @click="deleteProject"> delete </span>
@@ -17,6 +19,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   props: ["project"],
   data() {
@@ -73,6 +76,11 @@ export default {
       }
     }
   },
+  computed: {
+    moment: function () {
+      return moment(this.project.date).format("YYYY:MM:DD");
+    },
+  },
 };
 </script>
 
@@ -107,5 +115,11 @@ span:hover {
 h3 {
   cursor: pointer;
   color: indigo;
+}
+
+.task-date {
+  font-size: 15px;
+  color: #2c3e50;
+  font-weight: bold;
 }
 </style>

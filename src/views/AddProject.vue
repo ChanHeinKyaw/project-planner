@@ -7,6 +7,9 @@
     <label>Project Detail</label>
     <input type="text" v-model="detail" />
     <span class="errMessage" @show="detailError">{{ detailError }}</span>
+    <label>Choose Date</label>
+    <Datepicker v-model="date"></Datepicker>
+    <span class="errMessage" @show="dateError">{{ dateError }}</span>
     <button>Add Project</button>
   </form>
 </template>
@@ -20,6 +23,8 @@ export default {
       projects: [],
       titleError: "",
       detailError: "",
+      dateError: "",
+      date: "",
     };
   },
   mounted() {
@@ -33,7 +38,7 @@ export default {
   },
   methods: {
     addProject() {
-      if (this.title == "" || this.detail == "") {
+      if (this.title == "" || this.detail == "" || this.date == "") {
         if (this.title == "") {
           this.titleError = "The title field is required!";
         } else {
@@ -44,6 +49,11 @@ export default {
         } else {
           this.detailError = "";
         }
+        if (this.date == "") {
+          this.dateError = "The date field is required!";
+        } else {
+          this.dateError = "";
+        }
         return;
       }
       this.saveProjects();
@@ -53,6 +63,7 @@ export default {
         id: this.projects.length + 1,
         title: this.title,
         detail: this.detail,
+        date: this.date,
         complete: false,
       });
       localStorage.setItem("projects", JSON.stringify(this.projects));
@@ -108,5 +119,23 @@ form button {
 }
 .errMessage {
   color: crimson;
+}
+.dp__action {
+  padding: 0px !important;
+}
+
+.dp__button {
+  display: none !important;
+}
+
+.dp__icon {
+  display: none !important;
+}
+.dp__input_icon_pad {
+  padding-left: 10px !important;
+}
+.dp__input {
+  border: none !important;
+  border-bottom: 1px solid #ddd !important;
 }
 </style>

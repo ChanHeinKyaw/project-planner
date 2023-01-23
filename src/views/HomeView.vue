@@ -16,6 +16,7 @@
 <script>
 import FilterNav from "../components/FilterNav";
 import SingleProject from "../components/SingleProject";
+import moment from "moment";
 export default {
   name: "HomeView",
   data() {
@@ -53,6 +54,14 @@ export default {
   computed: {
     filteredProjects() {
       if (localStorage.getItem("projects")) {
+        if (this.current === "today") {
+          return this.projects.filter((project) => {
+            return (
+              moment(project.date).format("YYYY:MM:DD") ==
+              moment(new Date()).format("YYYY:MM:DD")
+            );
+          });
+        }
         if (this.current === "complete") {
           return this.projects.filter((project) => {
             return project.complete;
