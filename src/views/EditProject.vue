@@ -8,11 +8,7 @@
     <input type="text" v-model="detail" />
     <span class="errMessage" @show="detailError">{{ detailError }}</span>
     <label>Choose Date</label>
-    <Datepicker
-      v-model="date"
-      :format="formatDate"
-      placeholder="Date"
-    ></Datepicker>
+    <Datepicker v-model="date" placeholder="Date"></Datepicker>
     <span class="errMessage" @show="dateError">{{ dateError }}</span>
     <button>Update Project</button>
   </form>
@@ -23,12 +19,12 @@ import moment from "moment";
 export default {
   props: ["id"],
   data() {
-    const formatDate = (date) => {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
-    };
+    // const formatDate = (date) => {
+    //   const day = date.getDate();
+    //   const month = date.getMonth() + 1;
+    //   const year = date.getFullYear();
+    //   return `${day}/${month}/${year}`;
+    // };
     return {
       title: "",
       detail: "",
@@ -37,7 +33,6 @@ export default {
       titleError: "",
       detailError: "",
       dateError: "",
-      formatDate,
     };
   },
   methods: {
@@ -79,7 +74,7 @@ export default {
 
       data.title = this.title;
       data.detail = this.detail;
-      data.date = moment(this.date).format("DD/MM/YYYY");
+      data.date = this.date;
 
       localStorage.setItem("projects", JSON.stringify(this.projects));
       this.$router.push("/");

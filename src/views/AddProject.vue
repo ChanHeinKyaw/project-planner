@@ -8,11 +8,7 @@
     <input type="text" v-model="detail" />
     <span class="errMessage" @show="detailError">{{ detailError }}</span>
     <label>Choose Date</label>
-    <Datepicker
-      v-model="date"
-      :format="formatDate"
-      placeholder="Date"
-    ></Datepicker>
+    <Datepicker v-model="date" placeholder="Date"></Datepicker>
     <span class="errMessage" @show="dateError">{{ dateError }}</span>
     <button>Add Project</button>
   </form>
@@ -21,12 +17,12 @@
 <script>
 export default {
   data() {
-    const formatDate = () => {
-      const day = new Date().getDate();
-      const month = new Date().getMonth() + 1;
-      const year = new Date().getFullYear();
-      return `${day}/${month}/${year}`;
-    };
+    // const formatDate = () => {
+    //   const day = new Date().getDate();
+    //   const month = new Date().getMonth() + 1;
+    //   const year = new Date().getFullYear();
+    //   return `${day}/${month}/${year}`;
+    // };
     return {
       title: "",
       detail: "",
@@ -35,7 +31,6 @@ export default {
       detailError: "",
       dateError: "",
       date: "",
-      formatDate,
     };
   },
   mounted() {
