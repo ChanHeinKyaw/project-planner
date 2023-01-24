@@ -7,25 +7,48 @@
     <label>Project Detail</label>
     <input type="text" v-model="detail" />
     <span class="errMessage" @show="detailError">{{ detailError }}</span>
+    <label>Choose Date</label>
+    <Datepicker
+      v-model="date"
+      :format="formatDate"
+      placeholder="Date"
+    ></Datepicker>
+    <span class="errMessage" @show="dateError">{{ dateError }}</span>
     <button>Update Project</button>
   </form>
 </template>
 
 <script>
+import moment from "moment";
 export default {
   props: ["id"],
   data() {
+    const formatDate = (date) => {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
     return {
       title: "",
       detail: "",
+      date: "",
       projects: [],
       titleError: "",
       detailError: "",
+      dateError: "",
+      formatDate,
     };
   },
   methods: {
     updateProject() {
-      if (this.title == "" || this.detail == "") {
+      if (
+        this.title == "" ||
+        this.detail == "" ||
+        this.date == "" ||
+        this.date == "Invalid date" ||
+        this.date == null
+      ) {
         if (this.title == "") {
           this.titleError = "The title field is required!";
         } else {
@@ -35,6 +58,15 @@ export default {
           this.detailError = "The detail field is required!";
         } else {
           this.detailError = "";
+        }
+        if (
+          this.date == "" ||
+          this.date == "Invalid date" ||
+          this.date == null
+        ) {
+          this.dateError = "The date field is required!";
+        } else {
+          this.dateError = "";
         }
         return;
       }
@@ -47,6 +79,7 @@ export default {
 
       data.title = this.title;
       data.detail = this.detail;
+      data.date = moment(this.date).format("DD/MM/YYYY");
 
       localStorage.setItem("projects", JSON.stringify(this.projects));
       this.$router.push("/");
@@ -62,6 +95,7 @@ export default {
       if (data.id == this.id) {
         this.title = data.title;
         this.detail = data.detail;
+        this.date = data.date;
       }
     });
 

@@ -27,7 +27,8 @@ export default {
   },
   methods: {
     removeProject(id) {
-      this.projects.splice(this.projects.indexOf(id), 1);
+      const index = this.projects.findIndex((pj) => pj.id == id);
+      this.projects.splice(index, 1);
       localStorage.setItem("projects", JSON.stringify(this.projects));
       window.toaster.success("Project Deleted Success!", {
         position: "top-right",

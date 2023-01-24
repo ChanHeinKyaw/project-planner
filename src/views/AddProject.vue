@@ -8,7 +8,11 @@
     <input type="text" v-model="detail" />
     <span class="errMessage" @show="detailError">{{ detailError }}</span>
     <label>Choose Date</label>
-    <Datepicker v-model="date"></Datepicker>
+    <Datepicker
+      v-model="date"
+      :format="formatDate"
+      placeholder="Date"
+    ></Datepicker>
     <span class="errMessage" @show="dateError">{{ dateError }}</span>
     <button>Add Project</button>
   </form>
@@ -17,6 +21,12 @@
 <script>
 export default {
   data() {
+    const formatDate = () => {
+      const day = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      return `${day}/${month}/${year}`;
+    };
     return {
       title: "",
       detail: "",
@@ -25,6 +35,7 @@ export default {
       detailError: "",
       dateError: "",
       date: "",
+      formatDate,
     };
   },
   mounted() {
@@ -38,7 +49,13 @@ export default {
   },
   methods: {
     addProject() {
-      if (this.title == "" || this.detail == "" || this.date == "") {
+      if (
+        this.title == "" ||
+        this.detail == "" ||
+        this.date == "" ||
+        this.date == "Invalid date" ||
+        this.date == null
+      ) {
         if (this.title == "") {
           this.titleError = "The title field is required!";
         } else {
@@ -49,7 +66,11 @@ export default {
         } else {
           this.detailError = "";
         }
-        if (this.date == "") {
+        if (
+          this.date == "" ||
+          this.date == "Invalid date" ||
+          this.date == null
+        ) {
           this.dateError = "The date field is required!";
         } else {
           this.dateError = "";
@@ -128,12 +149,6 @@ form button {
   display: none !important;
 }
 
-.dp__icon {
-  display: none !important;
-}
-.dp__input_icon_pad {
-  padding-left: 10px !important;
-}
 .dp__input {
   border: none !important;
   border-bottom: 1px solid #ddd !important;

@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     moment: function () {
-      return moment(this.project.date).format("YYYY:MM:DD");
+      return moment(this.project.date).format("DD/MM/YYYY");
     },
   },
 };
