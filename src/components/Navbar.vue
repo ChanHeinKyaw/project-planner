@@ -2,13 +2,13 @@
   <nav class="main-nav">
     <router-link :to="{ name: 'home' }">Projects</router-link>
     <router-link :to="{ name: 'addProject' }">Add Project</router-link>
-    <!-- <router-link :to="{ name: 'userLogin' }" v-if="!$root.user"
+    <router-link :to="{ name: 'userLogin' }" v-if="!$root.user"
       >Login</router-link
     >
     <router-link :to="{ name: 'userRegister' }" v-if="!$root.user"
       >Register</router-link
     >
-    <span class="logout" @click="logout()" v-else>Logout</span> -->
+    <span class="logout" @click="logout()" v-else>Logout</span>
   </nav>
 </template>
 
