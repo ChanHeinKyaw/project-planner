@@ -76,7 +76,7 @@ export default {
     },
     saveProjects() {
       this.projects.push({
-        id: this.projects.length + 1,
+        id: Date.now(),
         title: this.title,
         detail: this.detail,
         date: this.date,
